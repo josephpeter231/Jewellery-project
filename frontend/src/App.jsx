@@ -73,7 +73,7 @@ const ImageUploader = () => {
       console.log('Cloudinary URL:', cloudUrl);
       setUploadStatus({ success: true, url: cloudUrl });
 
-      const reverseSearch = await axios.post('http://localhost:5000/reverse-image', {
+      const reverseSearch = await axios.post('https://jewellery-project-mg0o.onrender.com/reverse-image', {
         imageUrl: cloudUrl,
       });
 
