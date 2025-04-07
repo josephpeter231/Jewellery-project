@@ -32,7 +32,7 @@ app.post('/reverse-image', async (req, res) => {
     const imageLinks = visualMatches
       .map(match => match.image)
       .filter(link => !!link)
-      .slice(0, 10);
+      .slice(0,20);
 
     // Save to DB
     const savedRecord = new ReverseImage({
