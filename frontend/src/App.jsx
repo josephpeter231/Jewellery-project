@@ -217,7 +217,7 @@ const ImageUploader = () => {
                 </div>
                 <div className="result-details">
                   {item.title && <h3 className="result-title">{item.title}</h3>}
-                  {item.price && <p className="result-price">{item.price.value || item.price}</p>}
+                  {item.price && <p className="result-price">₹                      {item.price.extracted_value|| item.price}</p>}
                   {item.source && <p className="result-source">{item.source}</p>}
                   <a href={item.link} target="_blank" rel="noreferrer" className="view-button">
                     View Details
