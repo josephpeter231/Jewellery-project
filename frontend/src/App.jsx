@@ -73,11 +73,12 @@ const ImageUploader = () => {
       console.log('Cloudinary URL:', cloudUrl);
       setUploadStatus({ success: true, url: cloudUrl });
 
-      const reverseSearch = await axios.post('http://localhost:5000/reverse-image', {
+      const reverseSearch = await axios.post('https://jewellery-project-mg0o.onrender.com/reverse-image', {
         imageUrl: cloudUrl,
       });
 
       setSearchResults(reverseSearch.data.results);
+      console.log('Search Results:', reverseSearch.data.results);
     } catch (err) {
       console.error(err);
       setError('Upload or search failed');
@@ -216,7 +217,7 @@ const ImageUploader = () => {
                 </div>
                 <div className="result-details">
                   {item.title && <h3 className="result-title">{item.title}</h3>}
-                  {item.price && <p className="result-price">${item.price.value || item.price}</p>}
+                  {item.price && <p className="result-price">{item.price.value || item.price}</p>}
                   {item.source && <p className="result-source">{item.source}</p>}
                   <a href={item.link} target="_blank" rel="noreferrer" className="view-button">
                     View Details
