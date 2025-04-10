@@ -20,29 +20,36 @@ app.post('/reverse-image', async (req, res) => {
   const { imageUrl } = req.body;
 
   const params = {
-    api_key: 'b00c9cdfba3d779fc42fb3142fe431d741fdef7ecb11d58d744c04fae78502c1',
+    api_key: 'a4b8bbb22137b941e210cd14b524f6a9584cd873955c3e1f3bf65e3b8e26adf3',
     engine: 'google_lens',
     url: imageUrl,
   };
 
   try {
     const response = await axios.get('https://serpapi.com/search', { params });
+    console.log('Response:', response.data);
     const visualMatches = response.data.visual_matches || [];
 
-    const imageLinks = visualMatches
-      .map(match => match.image)
-      .filter(link => !!link)
-      .slice(0,20);
+    const imageResults = visualMatches
+      .map(match => ({
+        image: match.image,
+        price: match.price || null,
+        title: match.title || '',
+        link: match.link || '',
+        source: match.source || ''
+      }))
+      .filter(item => !!item.image)
+      .slice(0, 25);
 
     // Save to DB
     const savedRecord = new ReverseImage({
       inputImage: imageUrl,
-      outputImages: imageLinks
+      outputImages: imageResults.map(item => item.image)
     });
 
     await savedRecord.save();
 
-    res.json({ images: imageLinks });
+    res.json({ results: imageResults });
   } catch (error) {
     console.error('Error:', error.response?.data || error.message);
     res.status(500).json({ error: 'Failed to fetch reverse image results' });
@@ -52,4 +59,4 @@ app.post('/reverse-image', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
- 
+
